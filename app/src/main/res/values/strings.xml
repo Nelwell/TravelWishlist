@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TravelWishlist</string>
+    <string name="enter_place_name">Enter place name</string>
+    <string name="add_place">Add</string>
+    <string name="delete_place_message">Delete %1$s</string>
+    <string name="delete_dialog_title">Delete Place</string>
+    <string name="place_name_textview">TextView</string>
+    <string name="date_created_textview">TextView</string>
+
+</resources>
