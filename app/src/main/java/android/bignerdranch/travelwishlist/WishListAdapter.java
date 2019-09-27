@@ -9,8 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishListViewHolder> {
@@ -21,7 +19,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
     // Click and long-click listener
     private WishListClickListener listener;
 
-    // Constructor
+    // Constructor to set data
     public WishListAdapter(List<Place> data, WishListClickListener listener) {
         this.listener = listener;
         this.data = data;
@@ -43,12 +41,13 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
             this.layout = layout;
             nameTextView = layout.findViewById(R.id.placeNameTextView);
             dateCreatedTextView = layout.findViewById(R.id.dateCreatedTextView);
-            layout.setOnClickListener(this); //TODO finish this
+            layout.setOnClickListener(this);
             layout.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
+            // Notify the listener of the event, and which item was clicked
             listener.onListClick(getAdapterPosition());
         }
 
@@ -64,14 +63,18 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
     @NonNull
     @Override
     public WishListAdapter.WishListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Get a reference to the wish_list_element LinearLayout container and inflate in, in this context
         LinearLayout layout = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.wish_list_element, parent, false);
+        // Create a new viewHolder, to contain this LinearLayour
         WishListViewHolder viewHolder = new WishListViewHolder(layout, listener);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull WishListAdapter.WishListViewHolder holder, int position) {
+        // Configures a ViewHolder to display the dta for he given position
+        // In Android terminology, bind the view and its data
         Place place = data.get(position);
         holder.nameTextView.setText(place.getName());
         holder.dateCreatedTextView.setText("Created on " + place.getDateCreated());

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/list_item_place_margin"
-    android:background="@color/place_list_item_background"
+    android:background="#5EE3F5"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/list_item_place_padding"
@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/place_name_textview"
+        android:textColor="#4C15AD"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -22,5 +23,6 @@
         android:id="@+id/dateCreatedTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/date_created_textview" />
+        android:text="@string/date_created_textview"
+        android:textColor="#6633C0" />
 </LinearLayout>

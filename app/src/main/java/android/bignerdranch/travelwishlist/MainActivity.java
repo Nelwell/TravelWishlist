@@ -22,11 +22,12 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    // Initialize widgets
     private Button mAddButton;
     private EditText mNewPlaceNameEditText;
 
+    // Initialize List of Places
     private List<Place> mPlaces;
-
 
 
     @Override
@@ -34,12 +35,15 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Holds list of Places' name and date created
         mPlaces = new ArrayList<>();
 
-        mPlaces.add(new Place("Tokyo"));
-        mPlaces.add(new Place("Budapest"));
-        mPlaces.add(new Place("Machu Picchu"));
+        // Example places for testing
+//        mPlaces.add(new Place("Tokyo"));
+//        mPlaces.add(new Place("Budapest"));
+//        mPlaces.add(new Place("Machu Picchu"));
 
+        // Gets references to string resource IDs
         mWishListRecyclerView = findViewById(R.id.wish_list);
         mAddButton = findViewById(R.id.add_new_place);
         mNewPlaceNameEditText = findViewById(R.id.new_place_name);
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
         mWishListRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new WishListAdapter(mPlaces, this);
+        // Draws new item to RecyclerView
         mWishListRecyclerView.setAdapter(mAdapter);
 
         mAddButton.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                     return;
                 }
 
+                // Add new place and notify Adapter that an item was inserted
                 mPlaces.add(new Place(newPlace));
                 mAdapter.notifyItemInserted(mPlaces.size() -1); // The last element
                 mNewPlaceNameEditText.getText().clear();
@@ -92,11 +98,9 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                         mAdapter.notifyItemRemoved(itemPosition);
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, null)
+                .setNegativeButton(android.R.string.cancel, null) // No event handler needed for Cancel
                 .create();
         confirmDeleteDialog.show();
-//        mPlaces.remove(position);
-//        mAdapter.notifyItemRemoved(position);
 
     }
 }
