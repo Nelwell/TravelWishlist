@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Holds list of Places' name and date created
+        // Holds list of Places' name and reason
         mPlaces = new ArrayList<>();
 
         // Example places for testing
@@ -67,14 +67,17 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                 // Gets texts of filled out fields and converts to Strings
                 String newPlace = mNewPlaceNameEditText.getText().toString();
                 String reason = mReasonEditText.getText().toString();
-                if (newPlace.isEmpty() || reason.isEmpty()) {
+                // Caps first letter of entries
+                String newPlaceCap = newPlace.substring(0, 1).toUpperCase() + newPlace.substring(1);
+                String reasonCap = reason.substring(0, 1).toUpperCase() + reason.substring(1);
+                if (newPlaceCap.isEmpty() || reasonCap.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Please fill out both fields.",
                             Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 // Add new place and notify Adapter that an item was inserted
-                mPlaces.add(new Place(newPlace, reason));
+                mPlaces.add(new Place(newPlaceCap, reasonCap));
                 mAdapter.notifyItemInserted(mPlaces.size() -1); // The last element
                 mNewPlaceNameEditText.getText().clear();
                 mReasonEditText.getText().clear();
