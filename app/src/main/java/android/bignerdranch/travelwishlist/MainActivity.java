@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,9 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
     // Initialize widgets
     private Button mAddButton;
     private EditText mNewPlaceNameEditText;
+    private EditText mReasonEditText;
 
-    // Initialize List of Places
+    // Initialize List of Place objects
     private List<Place> mPlaces;
 
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
         mWishListRecyclerView = findViewById(R.id.wish_list);
         mAddButton = findViewById(R.id.add_new_place);
         mNewPlaceNameEditText = findViewById(R.id.new_place_name);
+        mReasonEditText =findViewById(R.id.reason);
 
         // Configure RecyclerView
         mWishListRecyclerView.setHasFixedSize(true);
@@ -61,15 +64,20 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Gets texts of filled out fields and converts to Strings
                 String newPlace = mNewPlaceNameEditText.getText().toString();
-                if (newPlace.isEmpty()) {
+                String reason = mReasonEditText.getText().toString();
+                if (newPlace.isEmpty() || reason.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please fill out both fields.",
+                            Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 // Add new place and notify Adapter that an item was inserted
-                mPlaces.add(new Place(newPlace));
+                mPlaces.add(new Place(newPlace, reason));
                 mAdapter.notifyItemInserted(mPlaces.size() -1); // The last element
                 mNewPlaceNameEditText.getText().clear();
+                mReasonEditText.getText().clear();
             }
         });
 
@@ -81,13 +89,13 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
         Uri locationUri = Uri.parse("geo:0,0?q=" + Uri.encode(place.getName()));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, locationUri);
         startActivity(mapIntent);
-
     }
 
     @Override
     public void onListLongClick(int position) {
         final int itemPosition = position;
 
+        // Create pop-up asking user to confirm they want to delete location from list
         AlertDialog confirmDeleteDialog = new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.delete_place_message, mPlaces.get(position).getName()))
                 .setTitle(getString(R.string.delete_dialog_title))
@@ -100,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                 })
                 .setNegativeButton(android.R.string.cancel, null) // No event handler needed for Cancel
                 .create();
-        confirmDeleteDialog.show();
 
+        confirmDeleteDialog.show();
     }
 }

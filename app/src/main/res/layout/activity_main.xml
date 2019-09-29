@@ -21,6 +21,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/reason"
+        android:layout_width="382dp"
+        android:layout_height="43dp"
+        android:ems="10"
+        android:hint="@string/reason"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_place_name" />
+
     <Button
         android:id="@+id/add_new_place"
         android:layout_width="wrap_content"
@@ -40,6 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_place_name"
+        app:layout_constraintTop_toBottomOf="@+id/reason"
         app:layout_constraintVertical_bias="0.0" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

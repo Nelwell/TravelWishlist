@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="@string/place_name_textview"
         android:textColor="#4C15AD"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
@@ -25,4 +25,12 @@
         android:layout_height="wrap_content"
         android:text="@string/date_created_textview"
         android:textColor="#6633C0" />
+
+    <TextView
+        android:id="@+id/reasonToGoTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reason_to_visit_textview"
+        android:textColor="#6633C0"
+        android:textSize="18sp" />
 </LinearLayout>

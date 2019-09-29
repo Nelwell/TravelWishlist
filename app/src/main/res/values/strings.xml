@@ -6,5 +6,7 @@
     <string name="delete_dialog_title">Delete Place</string>
     <string name="place_name_textview">TextView</string>
     <string name="date_created_textview">TextView</string>
+    <string name="reason">Why?</string>
+    <string name="reason_to_visit_textview">TextView</string>
 
 </resources>
