@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
     // Initialize List of Place objects
     private List<Place> mPlaces;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +75,13 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                     return;
                 }
 
-                // Add new place and notify Adapter that an item was inserted
+                // Add new place and reason, then notify Adapter that an item was inserted
                 mPlaces.add(new Place(newPlaceCap, reasonCap));
                 mAdapter.notifyItemInserted(mPlaces.size() -1); // The last element
                 mNewPlaceNameEditText.getText().clear();
                 mReasonEditText.getText().clear();
             }
         });
-
     }
 
     @Override

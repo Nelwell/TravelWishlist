@@ -9,7 +9,6 @@ public class Place {
     private String reason;
     private Date dateCreated;
 
-
     Place(String name, String reason) {
         this.name = name;
         this.reason = reason;
