@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
     private EditText mNewPlaceNameEditText;
     private EditText mReasonEditText;
 
+    // Initialize Place view model
+    private PlaceViewModel mPlaceModel;
+
     // Initialize List of Place objects
     private List<Place> mPlaces;
 
@@ -82,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                 mReasonEditText.getText().clear();
             }
         });
+
+        // Create Place view model
+        mPlaceModel = new PlaceViewModel(getApplication());
     }
 
     @Override

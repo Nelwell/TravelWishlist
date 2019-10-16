@@ -17,7 +17,7 @@ public class PlaceRecord {
     private String reason;
     private Date dateCreated;
 
-    PlaceRecord(int id, String name, String reason) {
+    PlaceRecord(String name, String reason) {
         this.name = name;
         this.reason = reason;
         this.dateCreated = new Date();
@@ -59,9 +59,10 @@ public class PlaceRecord {
     @Override
     public String toString() {
         return "PlaceRecord{" +
-                "name=" + name +
-                ", reason=" + reason +
-                ", date=" + dateCreated +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", reason='" + reason + '\'' +
+                ", dateCreated=" + dateCreated +
                 '}';
     }
 }
