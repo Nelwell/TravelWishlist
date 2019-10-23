@@ -1,5 +1,6 @@
 package android.bignerdranch.travelwishlist;
 
+import android.bignerdranch.travelwishlist.db.PlaceRecord;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,21 +9,26 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishListViewHolder> {
 
+    private final static String TAG = "PLACE_LIST_ADAPTER";
+
     // Adapter's internal data store
-    private List<Place> data;
+    private List<PlaceRecord> mPlaces;
 
     // Click and long-click listener
-    private WishListClickListener listener;
+    private WishListClickListener mListener;
 
     // Constructor to set data
-    public WishListAdapter(List<Place> data, WishListClickListener listener) {
-        this.listener = listener;
-        this.data = data;
+    public WishListAdapter(MainActivity mainActivity, WishListClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public void setNewPlaces(List<PlaceRecord> mPlaces) {
+        this.mPlaces = mPlaces;
+        notifyDataSetChanged();
     }
 
     // Objects of this class represent the view for one data item
@@ -34,11 +40,11 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
         TextView dateCreatedTextView;
         TextView reasonTextView;
 
-        WishListClickListener listener;
+        WishListClickListener mListener;
 
         WishListViewHolder(LinearLayout layout, WishListClickListener listener) {
             super(layout);
-            this.listener = listener;
+            this.mListener = listener;
             this.layout = layout;
             nameTextView = layout.findViewById(R.id.placeNameTextView);
             dateCreatedTextView = layout.findViewById(R.id.dateCreatedTextView);
@@ -50,13 +56,13 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
         @Override
         public void onClick(View view) {
             // Notify the listener of the event, and which item was clicked
-            listener.onListClick(getAdapterPosition());
+            mListener.onListClick(getAdapterPosition());
         }
 
         @Override
         public boolean onLongClick(View view) {
             // Notify listener of the event and which item was long-clicked
-            listener.onListLongClick(getAdapterPosition());
+            mListener.onListLongClick(getAdapterPosition());
             return true; // Indicates event is consumed, no further processing.
             // If this is false, in this app, the click event is fired too.
         }
@@ -68,16 +74,16 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
         // Get a reference to the wish_list_element LinearLayout container and inflate in, in this context
         LinearLayout layout = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.wish_list_element, parent, false);
-        // Create a new viewHolder, to contain this LinearLayour
-        WishListViewHolder viewHolder = new WishListViewHolder(layout, listener);
+        // Create a new viewHolder, to contain this LinearLayout
+        WishListViewHolder viewHolder = new WishListViewHolder(layout, mListener);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull WishListAdapter.WishListViewHolder holder, int position) {
-        // Configures a ViewHolder to display the dta for he given position
+        // Configures a ViewHolder to display the data for the given position
         // In Android terminology, bind the view and its data
-        Place place = data.get(position);
+        PlaceRecord place = mPlaces.get(position);
         holder.nameTextView.setText(place.getName());
         holder.dateCreatedTextView.setText("Created on " + place.getDateCreated());
         holder.reasonTextView.setText(place.getReason());
@@ -85,6 +91,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
 
     @Override
     public int getItemCount() {
-        return data.size();
+//        return mPlaces.size(); causes null object reference error
+        return 0;
     }
 }

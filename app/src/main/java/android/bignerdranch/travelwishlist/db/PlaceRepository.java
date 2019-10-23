@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+/** Where app will access needed data */
 // Define methods app will call to query database
 public class PlaceRepository {
 
@@ -19,8 +20,8 @@ public class PlaceRepository {
 
     // LiveData can wrap one item or a list of items inside it,
     // let's you know if something in db changes
-    public LiveData<List<PlaceRecord>> getAllPlaceRecords(int results) {
-        return placeDAO.getAllPlaceRecords(results);
+    public LiveData<List<PlaceRecord>> getAllPlaceRecords() {
+        return placeDAO.getAllPlaceRecords();
     }
 
     public LiveData<PlaceRecord> getRecordForName(String name) {

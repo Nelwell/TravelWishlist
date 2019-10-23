@@ -11,16 +11,16 @@ import java.util.Date;
 public class PlaceRecord {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     private int id;
+    @NonNull
     private String name;
-    private String reason;
     private Date dateCreated;
+    private String reason;
 
-    PlaceRecord(String name, String reason) {
+    public PlaceRecord(@NonNull String name, Date dateCreated, String reason) {
         this.name = name;
+        this.dateCreated = dateCreated;
         this.reason = reason;
-        this.dateCreated = new Date();
     }
 
     public int getId() {
@@ -40,14 +40,6 @@ public class PlaceRecord {
         this.name = name;
     }
 
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -56,13 +48,21 @@ public class PlaceRecord {
         this.dateCreated = dateCreated;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     @Override
     public String toString() {
         return "PlaceRecord{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", reason='" + reason + '\'' +
                 ", dateCreated=" + dateCreated +
+                ", reason='" + reason + '\'' +
                 '}';
     }
 }

@@ -2,25 +2,31 @@ package android.bignerdranch.travelwishlist;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.bignerdranch.travelwishlist.db.PlaceRecord;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements WishListClickListener {
 
+    private static final String TAG = "MAIN_ACTIVITY";
     private RecyclerView mWishListRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter mWishListAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     // Initialize widgets
@@ -29,23 +35,17 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
     private EditText mReasonEditText;
 
     // Initialize Place view model
-    private PlaceViewModel mPlaceModel;
+    private PlaceViewModel mPlaceViewModel;
 
     // Initialize List of Place objects
-    private List<Place> mPlaces;
+    private List<PlaceRecord> mPlaces;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Holds list of Places' name and reason
-        mPlaces = new ArrayList<>();
-
-        // Example places for testing
-//        mPlaces.add(new Place("Tokyo"));
-//        mPlaces.add(new Place("Budapest"));
-//        mPlaces.add(new Place("Machu Picchu"));
+        mPlaceViewModel = ViewModelProviders.of(this).get(PlaceViewModel.class);
 
         // Gets references to string resource IDs
         mWishListRecyclerView = findViewById(R.id.wish_list);
@@ -59,9 +59,13 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
         mLayoutManager = new LinearLayoutManager(this);
         mWishListRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new WishListAdapter(mPlaces, this);
+        mWishListAdapter = new WishListAdapter(this, this);
+        ((WishListAdapter) mWishListAdapter).setNewPlaces(mPlaces);
         // Draws new item to RecyclerView
-        mWishListRecyclerView.setAdapter(mAdapter);
+        mWishListRecyclerView.setAdapter(mWishListAdapter);
+
+        // Create Place view model
+        mPlaceViewModel = new PlaceViewModel(getApplication());
 
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,21 +82,42 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                     return;
                 }
 
+                // Example entry
+                PlaceRecord testPlace = new PlaceRecord("London", new Date(), "because");
+                mPlaceViewModel.insert(testPlace);
+
+                addPlace(newPlaceCap, reasonCap);
                 // Add new place and reason, then notify Adapter that an item was inserted
-                mPlaces.add(new Place(newPlaceCap, reasonCap));
-                mAdapter.notifyItemInserted(mPlaces.size() -1); // The last element
+//                mWishListAdapter.notifyItemInserted(0);
+                mWishListAdapter.notifyItemInserted(mPlaces.size()-1); // The last element
                 mNewPlaceNameEditText.getText().clear();
                 mReasonEditText.getText().clear();
             }
         });
 
-        // Create Place view model
-        mPlaceModel = new PlaceViewModel(getApplication());
+        // This doesn't do anything for the app, but can be helpful for debugging.
+        mPlaceViewModel.getAllPlaceRecords().observe(this, new Observer<List<PlaceRecord>>() {
+            @Override
+            public void onChanged(List<PlaceRecord> place) {
+                Log.d(TAG, "places are: " + place);
+            }
+        });
+    }
+
+    private void addPlace(String name, String reason) {
+        PlaceRecord place = new PlaceRecord(
+                name,
+                new Date(), // current time/date
+                reason);
+
+        Log.d(TAG, "Added place: " + place);
+
+        mPlaceViewModel.insert(place);
     }
 
     @Override
     public void onListClick(int position) {
-        Place place = mPlaces.get(position);
+        PlaceRecord place = mPlaces.get(position);
         Uri locationUri = Uri.parse("geo:0,0?q=" + Uri.encode(place.getName()));
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, locationUri);
         startActivity(mapIntent);
@@ -110,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mPlaces.remove(itemPosition);
-                        mAdapter.notifyItemRemoved(itemPosition);
+                        mWishListAdapter.notifyItemRemoved(itemPosition);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null) // No event handler needed for Cancel

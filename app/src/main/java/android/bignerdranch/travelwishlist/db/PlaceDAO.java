@@ -6,15 +6,14 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import java.util.List;
 
 @Dao
 public interface PlaceDAO {
 
-    @Query("SELECT * FROM placeRecord ORDER BY name DESC LIMIT :results")
-    LiveData<List<PlaceRecord>> getAllPlaceRecords(int results);
+    @Query("SELECT * FROM placeRecord ORDER BY name ASC")
+    LiveData<List<PlaceRecord>> getAllPlaceRecords();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE) // Ignore new record for an existing place
     void insert(PlaceRecord... pr);

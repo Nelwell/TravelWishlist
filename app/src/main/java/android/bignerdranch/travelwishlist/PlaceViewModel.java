@@ -10,29 +10,30 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-// Passes message from View to Repository
+/** Passes messages from View to Repository
+ */
 public class PlaceViewModel extends AndroidViewModel {
 
     private PlaceRepository mPlaceRepository;
     // Common to cache a copy of results of common queries here
-    private LiveData<List<PlaceRecord>> allPlaceRecords;
+    private LiveData<List<PlaceRecord>> mAllPlaceRecords;
 
     public PlaceViewModel(@NonNull Application application) {
         super(application);
         mPlaceRepository = new PlaceRepository(application);
-//        allPlaceRecords = mPlaceRepository.getAllPlaceRecords(results);
+        mAllPlaceRecords = mPlaceRepository.getAllPlaceRecords();
     }
 
-    public LiveData<List<PlaceRecord>> getAllPlaceRecords(int results) {
-        return mPlaceRepository.getAllPlaceRecords(results);
+    public LiveData<List<PlaceRecord>> getAllPlaceRecords() {
+        return mAllPlaceRecords;
     }
 
     public LiveData<PlaceRecord> getRecordForName(String name) {
         return mPlaceRepository.getRecordForName(name);
     }
 
-    public void insert(PlaceRecord placeRecord) {
-        mPlaceRepository.insert(placeRecord);
+    public void insert(PlaceRecord place) {
+        mPlaceRepository.insert(place);
     }
 
     public void delete(PlaceRecord placeRecord) {
