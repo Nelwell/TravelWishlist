@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
             public void onChanged(List<PlaceRecord> place) {
                 Log.d(TAG, "places are: " + place);
                 mPlaces = place;
+                mWishListAdapter.notifyDataSetChanged();
             }
         });
 
