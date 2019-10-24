@@ -70,12 +70,17 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
             public void onChanged(List<PlaceRecord> place) {
                 Log.d(TAG, "places are: " + place);
                 mPlaces = place;
-                mWishListAdapter.notifyDataSetChanged();
+//                mWishListAdapter.notifyDataSetChanged();
+                ((WishListAdapter) mWishListAdapter).setNewPlaces(mPlaces);
             }
         });
 
         // Create Place view model
         mPlaceViewModel = new PlaceViewModel(getApplication());
+
+        // Example entry
+        PlaceRecord testPlace = new PlaceRecord("London", new Date(), "because");
+        mPlaceViewModel.insert(testPlace);
 
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,10 +96,6 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                             Toast.LENGTH_LONG).show();
                     return;
                 }
-
-                // Example entry
-                PlaceRecord testPlace = new PlaceRecord("London", new Date(), "because");
-                mPlaceViewModel.insert(testPlace);
 
                 addPlace(newPlaceCap, reasonCap);
                 // Add new place and reason, then notify Adapter that an item was inserted
