@@ -91,7 +91,11 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.WishLi
 
     @Override
     public int getItemCount() {
-//        return mPlaces.size(); causes null object reference error
-        return 0;
+        if (mPlaces == null) {
+            return 0;
+        } else {
+
+        return mPlaces.size();
+        }
     }
 }

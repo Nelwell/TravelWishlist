@@ -64,6 +64,15 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
         // Draws new item to RecyclerView
         mWishListRecyclerView.setAdapter(mWishListAdapter);
 
+        // This doesn't do anything for the app, but can be helpful for debugging.
+        mPlaceViewModel.getAllPlaceRecords().observe(this, new Observer<List<PlaceRecord>>() {
+            @Override
+            public void onChanged(List<PlaceRecord> place) {
+                Log.d(TAG, "places are: " + place);
+                mPlaces = place;
+            }
+        });
+
         // Create Place view model
         mPlaceViewModel = new PlaceViewModel(getApplication());
 
@@ -92,14 +101,6 @@ public class MainActivity extends AppCompatActivity implements WishListClickList
                 mWishListAdapter.notifyItemInserted(mPlaces.size()-1); // The last element
                 mNewPlaceNameEditText.getText().clear();
                 mReasonEditText.getText().clear();
-            }
-        });
-
-        // This doesn't do anything for the app, but can be helpful for debugging.
-        mPlaceViewModel.getAllPlaceRecords().observe(this, new Observer<List<PlaceRecord>>() {
-            @Override
-            public void onChanged(List<PlaceRecord> place) {
-                Log.d(TAG, "places are: " + place);
             }
         });
     }
